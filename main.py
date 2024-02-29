@@ -16,7 +16,7 @@ myAPIkey = os.environ["OPENAI_API_KEY"]
 startupDataPATH = os.path.join("data","population.csv" )
 
 # Data directoruy and file polulation.csv
-startup_df = pd.read_csv("/Users/pragalvhasharma/Downloads/Prag GO to Documents/Comp Sci/MY Projects/LLamaIndexRag Agent/env/Data/startupData.csv")
+startup_df = pd.read_csv(" ")
 
 #Creating Query Engine
 startup_query_engine = PandasQueryEngine(
