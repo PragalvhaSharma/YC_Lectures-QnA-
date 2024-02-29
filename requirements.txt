@@ -1,0 +1,5 @@
+llama-index
+pypdf
+python-dotenv
+pandas
+deeplake
