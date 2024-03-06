@@ -3,3 +3,4 @@ pypdf
 python-dotenv
 pandas
 deeplake
+llama-cpp-python
