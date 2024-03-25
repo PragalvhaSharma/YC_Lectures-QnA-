@@ -1,13 +1,15 @@
 from dotenv import load_dotenv
 import os
 import pandas as pd
-from llama_index.query_engine import PandasQueryEngine
+from llama_index.core.query_engine import PandasQueryEngine
 from prompts import new_prompt, instruction_LLM, contextForLlm
-from note import note_engine
-from llama_index.tools import QueryEngineTool, ToolMetadata
-from llama_index.agent import ReActAgent
-from llama_index.llms import OpenAI
+from llama_index.core.tools import QueryEngineTool, ToolMetadata
+from llama_index.core.agent import ReActAgent
+from llama_index.llms.openai import OpenAI
+from llama_index.core.query_engine import NLSQLTableQueryEngine
 from pdf import startup_engine
+from SQLAGENT import Sqlquery_engine
+
 
 load_dotenv()
 
@@ -16,7 +18,7 @@ myAPIkey = os.environ["OPENAI_API_KEY"]
 startupDataPATH = os.path.join("data","population.csv" )
 
 # Data directoruy and file polulation.csv
-startup_df = pd.read_csv(" ")
+startup_df = pd.read_csv("/Users/pragalvhasharma/Downloads/Prag GO to Documents/Comp Sci/MY Projects/Yc-Agent-Opensource/YC_Lectures-QnA-/Data/startupData.csv")
 
 #Creating Query Engine
 startup_query_engine = PandasQueryEngine(
@@ -27,7 +29,6 @@ startup_query_engine.update_prompts({"pandas_prompt": new_prompt})
 
 #List of Tools LLM has acess to 
 tools = [
-    note_engine,
     QueryEngineTool(
         query_engine=startup_query_engine,
         metadata=ToolMetadata(
@@ -41,6 +42,13 @@ tools = [
             name="lecture_data",
             description="this gives advice based on lecture.pdf about startups",
         ),
+    ),
+    QueryEngineTool(
+        query_engine = Sqlquery_engine,
+        metadata = ToolMetadata(
+            name="sql_answeringTool",
+            description="this tool retrieves info from a database and answers questions",
+        )
     ),
 ]
 
@@ -64,7 +72,6 @@ except ValueError as e:
         result = agent.query(prompt)
         print(result)
         prompt = input("Enter a prompt (q to quit):")
-
 
 
 
